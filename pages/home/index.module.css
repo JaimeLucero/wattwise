@@ -1,0 +1,19 @@
+
+.main {
+  fontFamily: 'Arial, sans-serif';
+  padding: '20px';
+  lineHeight: '1.6';
+  maxWidth: '800px';
+  margin: '0 auto';
+}
+.header {
+  textAlign: 'center' as const;
+  marginBottom: '40px';
+}
+.content {
+  marginBottom: '40px';
+}
+.footer {
+  textAlign: 'center' as const;
+  color: '#888';
+}
