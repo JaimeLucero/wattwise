@@ -14,6 +14,11 @@ const Header: React.FC = () => {
               </Link>
             </li>
             <li className={styles.navItem}>
+              <Link href="/dashboard" className={styles.navLink}>
+                Dashboard
+              </Link>
+            </li>
+            <li className={styles.navItem}>
               <Link href="/about" className={styles.navLink}>
                 About
               </Link>
