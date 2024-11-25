@@ -1,6 +1,8 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
-import './index.module.css';
+import styles from './index.module.css';
+import Header from '@components/header/Header';
+
 const Home: NextPage = () => {
   return (
     <>
@@ -9,12 +11,13 @@ const Home: NextPage = () => {
         <meta name="description" content="Welcome to my Next.js app home page." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className='main'>
-        <header className='header'>
+      <main className={styles.main}>
+        <Header />
+        <header className={styles.header}>
           <h1>Welcome to My Next.js App</h1>
           <p>Start building amazing apps with Next.js and TypeScript!</p>
         </header>
-        <section className='content'>
+        <section className={styles.content}>
           <h2>Features</h2>
           <ul>
             <li>🚀 Fast rendering</li>
@@ -22,7 +25,7 @@ const Home: NextPage = () => {
             <li>🔒 Secure and scalable</li>
           </ul>
         </section>
-        <footer className='footer'>
+        <footer className={styles.footer}>
           <p>&copy; {new Date().getFullYear()} My Next.js App. All rights reserved.</p>
         </footer>
       </main>
