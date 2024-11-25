@@ -5,10 +5,11 @@ import styles from './Header.module.css';
 const Header: React.FC = () => {
     return (
       <header className={styles.header}>
+        <img src="Watt-Wise.svg" alt="Logo" width="50" height="50" style={{ paddingLeft: '20px' }}/>
         <nav className={styles.nav}>
           <ul className={styles.navList}>
             <li className={styles.navItem}>
-              <Link href="/" className={styles.navLink}>
+              <Link href="/home" className={styles.navLink}>
                 Home
               </Link>
             </li>
