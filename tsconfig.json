@@ -19,7 +19,8 @@
     "jsx": "preserve",
     "paths": {
       "@components/*": ["./components/*"],
-      "@styles/*": ["./styles/*"]
+      "@styles/*": ["./styles/*"],
+      "@pages/*": ["./pages/*"]
     }
   },
   "include": [
