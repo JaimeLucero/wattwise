@@ -176,7 +176,8 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
       if (values.length === 0) {
         return {
           value: "No data",
-          changeFromAvg: "No change"
+          changeFromAvg: "No change",
+          recommendation: "No data available for recommendations."
         };
       }
   
@@ -188,13 +189,25 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
       if (isNaN(average) || isNaN(peak) || isNaN(changeFromAvg)) {
         return {
           value: "",
-          changeFromAvg: ""
+          changeFromAvg: "",
+          recommendation: "Error calculating data. Please check your input."
         };
+      }
+  
+      // Determine recommendation based on metric
+      let recommendation = "";
+      if (peak > average * 1.5) {
+        recommendation = "Consider reducing usage during peak periods to avoid higher consumption costs.";
+      } else if (peak < average * 0.5) {
+        recommendation = "Usage is quite low. Ensure appliances are running optimally.";
+      } else {
+        recommendation = "Monitor your consumption during peak periods for more control over energy usage.";
       }
   
       return {
         value: peak.toFixed(2), // Peak value rounded to 2 decimals
-        changeFromAvg: changeFromAvg.toFixed(2) // Percent change rounded to 2 decimals
+        changeFromAvg: changeFromAvg.toFixed(2), // Percent change rounded to 2 decimals
+        recommendation: recommendation
       };
     };
   
@@ -217,6 +230,7 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
   
     return breakdown;
   };
+  
 
   if (loading) {
     return <div>Loading...</div>;
@@ -228,7 +242,7 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
 
   return (
     <div style={{ width: '90%', margin: '20px', padding: '20px', gap: '15px', display:'flex', flexDirection:'column' }}>
-      <h2>Energy Consumption Insights</h2>
+      <h2>Monthly Insights</h2>
       {peak7DayPeriod.startDate && peak7DayPeriod.endDate && (
         <div>
           <h3>Peak 7-Day Period:</h3>
@@ -240,7 +254,7 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
         breakdownInsights ? (
             <div
             style={{
-                paddingTop: '20px'
+                paddingTop: '10px'
             }}
             >
             <h3>Breakdown Insights:</h3>
@@ -255,6 +269,7 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
                 </h4>
                 <p>Value: {metric.value ? `${metric.value} W` : 'No data available'}</p>
                 <p>Change from Average: {metric.changeFromAvg ? `${metric.changeFromAvg} %` : 'No data available'}</p>
+                <p style={{fontSize:'0.7rem'}}>Recommendation: {metric.recommendation}</p>
                 </div>
             ))}
             </div>
