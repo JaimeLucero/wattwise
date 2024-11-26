@@ -5,8 +5,8 @@ import DataTable from '@components/table/Table';
 import axios from 'axios';
 import PieChart from '@components/piechart/Piechart';
 import PowerCostCalculator from '@components/cost/Cost';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import ConsumerInsights from '@components/monthly-insights/MonthlyInsights';
+import BillingInformation from '@components/billing/Billing';
 
 const Dashboard = () => {
 
@@ -491,6 +491,7 @@ const Dashboard = () => {
                     borderRadius: '40px'
                 }}  
                 >
+                    <BillingInformation userid={accountNumberValue}/>
                 </div>
 
                 <div

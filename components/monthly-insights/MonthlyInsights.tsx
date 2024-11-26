@@ -53,29 +53,34 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
       console.log("No data available");
       return { startDate: '', endDate: '' };
     }
-
+  
     // Find the most recent date based on the timestamp field
-    const mostRecentDate = new Date(Math.max(...data.map(item => new Date(item.datetime).getTime())));
-    console.log('Most Recent Date:', mostRecentDate);
-
+    const mostRecentDate = data.reduce((latest, current) => {
+      const latestDate = new Date(latest.datetime);
+      const currentDate = new Date(current.datetime);
+      return currentDate > latestDate ? current : latest;
+    });
+  
+    console.log('Most Recent Date:', mostRecentDate.datetime);
+  
     // Get the month and year for the most recent date
-    const recentMonth = mostRecentDate.getMonth();
-    const recentYear = mostRecentDate.getFullYear();
-    console.log('Filtering for Most Recent Month:', recentMonth, 'Year:', recentYear);
-
+    const recentMonth = new Date(mostRecentDate.datetime).getMonth();
+    const recentYear = new Date(mostRecentDate.datetime).getFullYear();
+    console.log('Filtering for Most Recent Month:', recentMonth + 1, 'Year:', recentYear);
+  
     // Calculate the first and last day of the most recent month
     const startDate = new Date(recentYear, recentMonth, 1);
     const endDate = new Date(recentYear, recentMonth + 1, 0); // The last day of the month
-
+  
     console.log('Start Date of Recent Month:', startDate);
     console.log('End Date of Recent Month:', endDate);
-
+  
     return {
       startDate: startDate.toLocaleDateString(),
       endDate: endDate.toLocaleDateString(),
     };
   };
-
+  
   // Function to get the peak 7-day period based on total consumption for the most recent month
   const getPeak7DayPeriod = (data: UsageData[], startDate: string, endDate: string): Period => {
     if (data.length === 0) {
@@ -160,8 +165,57 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
   }, [usageData]); // This effect runs whenever `usageData` is updated
 
   const getBreakdownInsights = (data: UsageData[], startDate: string, endDate: string) => {
-    const peak7DayBreakdown = getPeak7DayPeriod(data, startDate, endDate);
-    return peak7DayBreakdown;
+    // Filter data based on the selected date range
+    const filteredData = data.filter(item => {
+      const itemDate = new Date(item.datetime);
+      return itemDate >= new Date(startDate) && itemDate <= new Date(endDate);
+    });
+  
+    // Helper function to calculate average, peak, and change from average
+    const calculateMetricInsights = (values: number[]) => {
+      if (values.length === 0) {
+        return {
+          value: "No data",
+          changeFromAvg: "No change"
+        };
+      }
+  
+      const average = values.reduce((acc, value) => acc + value, 0) / values.length;
+      const peak = Math.max(...values);
+      const changeFromAvg = ((peak - average) / average) * 100;
+  
+      // Check for NaN values
+      if (isNaN(average) || isNaN(peak) || isNaN(changeFromAvg)) {
+        return {
+          value: "",
+          changeFromAvg: ""
+        };
+      }
+  
+      return {
+        value: peak.toFixed(2), // Peak value rounded to 2 decimals
+        changeFromAvg: changeFromAvg.toFixed(2) // Percent change rounded to 2 decimals
+      };
+    };
+  
+    // Metrics to calculate breakdown for
+    const metrics = {
+      Global_active_power: "activePower",
+      Reactive_power: "reactivePower",
+      Voltage: "voltage",
+      Intensity: "intensity"
+    };
+  
+    // Object to hold insights for all metrics
+    const breakdown: any = {};
+  
+    // Loop through each metric and compute insights
+    Object.entries(metrics).forEach(([key, name]) => {
+      const values = filteredData.map(item => item[key]);
+      breakdown[name] = calculateMetricInsights(values);
+    });
+  
+    return breakdown;
   };
 
   if (loading) {
@@ -175,39 +229,39 @@ const ConsumerInsights: React.FC<ConsumerInsightsProps> = ({ userId }) => {
   return (
     <div style={{ width: '90%', margin: '20px', padding: '20px', gap: '15px', display:'flex', flexDirection:'column' }}>
       <h2>Energy Consumption Insights</h2>
-
-      {recentMonthPeriod.startDate && recentMonthPeriod.endDate && (
-        <div>
-          <h3>Recent Month Period:</h3>
-          <p>Start Date: {recentMonthPeriod.startDate}</p>
-          <p>End Date: {recentMonthPeriod.endDate}</p>
-        </div>
-      )}
-
       {peak7DayPeriod.startDate && peak7DayPeriod.endDate && (
         <div>
           <h3>Peak 7-Day Period:</h3>
-          <p>Start Date: {peak7DayPeriod.startDate}</p>
-          <p>End Date: {peak7DayPeriod.endDate}</p>
+          <p>Start Date: {peak7DayPeriod.startDate}   <strong>-</strong>   End Date: {peak7DayPeriod.endDate}</p>
         </div>
       )}
 
-    {
-    breakdownInsights && breakdownInsights.activePower ? (
-        <div>
-        <h3>Breakdown Insights:</h3>
-        <div>
-            <h4>Active Power</h4>
-            <p>Value: {breakdownInsights.activePower.value} W</p>
-            <p>Change from Average: {breakdownInsights.activePower.changeFromAvg} %</p>
-            <p>Period: {breakdownInsights.activePower.period}</p>
-        </div>
-        </div>
-    ) : (
-        <div>Loading Breakdown Insights...</div>
-    )
-    }
-
+        {
+        breakdownInsights ? (
+            <div
+            style={{
+                paddingTop: '20px'
+            }}
+            >
+            <h3>Breakdown Insights:</h3>
+            {Object.entries(breakdownInsights).map(([key, metric]) => (
+                <div key={key}>
+                <h4>
+                {key
+                    .replace(/([A-Z])/g, ' $1') // Insert space before uppercase letters
+                    .trim() // Remove extra spaces
+                    .toLowerCase() // Convert all letters to lowercase
+                    .replace(/\b\w/g, char => char.toUpperCase())} {/* Capitalize first letter of each word */}
+                </h4>
+                <p>Value: {metric.value ? `${metric.value} W` : 'No data available'}</p>
+                <p>Change from Average: {metric.changeFromAvg ? `${metric.changeFromAvg} %` : 'No data available'}</p>
+                </div>
+            ))}
+            </div>
+        ) : (
+            <div>Loading Breakdown Insights...</div>
+        )
+        }
     </div>
   );
 };

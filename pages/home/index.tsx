@@ -1,8 +1,17 @@
 import { NextPage } from 'next';
 import Header from '@components/header/Header';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+
+  const router = useRouter(); // Hook to get the current route
+
+  const handleLinkClick = (href: string) => {
+    // Navigate to the target page directly
+    router.push(href);
+  };
+
   return (
     <main
       style={{
@@ -68,6 +77,7 @@ const Home: NextPage = () => {
                 cursor: 'pointer',              // Pointer cursor on hover
                 marginTop: '20px',               // Add space between the text and button
               }}
+              onClick={() => handleLinkClick('/about')}
             >
               <span>Know More</span>
               {/* Right Arrow Icon */}
