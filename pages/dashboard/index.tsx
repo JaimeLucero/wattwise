@@ -9,8 +9,8 @@ const Dashboard = () => {
     const [monthValue, setMonthValue] = useState<string>('');
     const [dayValue, setDayValue] = useState<string>('');
     const [metricValue, setMetricValue] = useState<string>('Global_active_power');
-    const [yearValueInsight, setYearValueInsight] = useState<string>('');
     const [availableYears, setAvailableYears] = useState<string[]>([]);
+    const [yearValueInsight, setYearValueInsight] = useState<string>('');    
     const [availableMonths, setAvailableMonths] = useState<string[]>([]);
     const [availableDays, setAvailableDays] = useState<string[]>([]);
     const [fetchedData, setFetchedData] = useState<any[]>([]);
@@ -35,15 +35,15 @@ const Dashboard = () => {
           const response = await axios.get('http://127.0.0.1:5000/api/full_query?columns=datetime,Global_active_power');
           const data = response.data;
   
-          // Extract unique years
+          // Extract unique years as string[]
           const years = Array.from(
             new Set(
               data.map((item: any) => {
                 const date = new Date(item.datetime);
-                return date.getFullYear().toString();
+                return date.getFullYear().toString(); // Ensure it's a string
               })
             )
-          ).sort();
+          ).sort() as string[]; // Assert that the result is a string array
 
           // Set the latest year as the default year
           const latestYear = years[years.length - 1] || '';

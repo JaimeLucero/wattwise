@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { ChartOptions } from 'chart.js'; // Import ChartOptions type
 
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -78,12 +79,12 @@ const ForecastVisualization: React.FC = () => {
   };
 
   // Chart options including legend and axis labels
-  const chartOptions = {
+  const chartOptions:  ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,  // Ensure chart stretches to fill container
     plugins: {
       legend: {
-        position: 'top',
+        position:'top',
         labels: {
           font: {
             size: 14,
