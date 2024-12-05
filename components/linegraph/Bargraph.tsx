@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2'; // Import the Bar chart component
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { DateTime } from 'luxon'; // Import DateTime from luxon
 
 // Register the necessary chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-interface LineGraphProps {
+interface BarGraphProps {
   year: string;
   month: string;
   day: string;
@@ -15,16 +15,50 @@ interface LineGraphProps {
   userid: string;
 }
 
-const LineGraph: React.FC<LineGraphProps> = ({ year, month, day, metric, userid }) => {
+const BarGraph: React.FC<BarGraphProps> = ({ year, month, day, metric, userid }) => {
   const [data, setData] = useState<any>(null); // Data for the chart
   const [groupedData, setGroupedData] = useState<Record<string, number>>({}); // Grouped data for the chart
+  const [filter, setFilter] = useState<any>(null);
+
+  const formatMetric = (metricValue: string) => {
+    return metricValue
+      .replace(/_/g, ' ')                 // Replace underscores with spaces
+      .split(' ')                         // Split the string into an array of words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+      .join(' ');                         // Join the words back into a string with spaces
+  };
+
+  useEffect(() => {
+    // Helper function to get the month name from the month number
+    const getMonthName = (monthNumber: number) => {
+      const date = new Date(0); // create a new date object
+      date.setMonth(monthNumber - 1); // set the month (JavaScript months are 0-indexed)
+      return date.toLocaleString('default', { month: 'long' }); // Get the full month name
+    };
+
+    // Convert the month string to a number if necessary
+    const monthNumber = typeof month === 'string' ? parseInt(month) : month;
+
+    // Only update the filter when year, month, or day changes
+    if (!year) {
+      setFilter('Year');
+    } else if (year && !month && !day) {
+      setFilter(year); // If only the year is present
+    } else if (year && month && !day) {
+      const monthName = getMonthName(monthNumber); // Get the full month name
+      setFilter(`${monthName}, ${year}`); // If year and month are present
+    } else if (year && month && day) {
+      const monthName = getMonthName(monthNumber); // Get the full month name
+      setFilter(`${monthName} ${day}, ${year}`); // If year, month, and day are present
+    }
+  }, [year, month, day]); // Only run when year, month, or day changes
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the API URL based on the selected filters
         let apiUrl = '';
-        if (!userid){
+        if (!userid) {
           apiUrl = `http://127.0.0.1:5000/api/full_query?columns=datetime,${metric}`;
         } else {
           apiUrl = `http://127.0.0.1:5000/api/full_query?user_id=${userid}&columns=datetime,${metric}`;
@@ -32,19 +66,19 @@ const LineGraph: React.FC<LineGraphProps> = ({ year, month, day, metric, userid 
         const response = await axios.get(apiUrl);
         const fetchedData = response.data;
 
-        console.log("Fetched Data:", fetchedData); // Debugging step: Check fetched d
+        console.log("Fetched Data:", fetchedData); // Debugging step: Check fetched data
 
         // Group data by the selected parameters
         const tempGroupedData: Record<string, number> = {};
 
         fetchedData.forEach((item: any) => {
           const date = DateTime.fromFormat(item.datetime, 'yyyy-MM-dd HH:mm:ss');
-          
+
           if (!date.isValid) {
             console.error('Invalid datetime:', item.datetime);
             return;
           }
-          
+
           // Step 1: Filter data by year (if year is selected)
           if (year && date.year !== parseInt(year)) return;
 
@@ -112,9 +146,9 @@ const LineGraph: React.FC<LineGraphProps> = ({ year, month, day, metric, userid 
           {
             label: `Total ${metric} (per ${year ? 'Year' : month ? 'Month' : 'Day'})`, // Dynamic label based on year/month/day
             data: values, // Y-axis data (summed metric values)
-            borderColor: 'rgba(75,192,192,1)', // Line color
-            backgroundColor: 'rgba(75,192,192,0.2)', // Background color
-            fill: true, // Whether to fill the area under the line
+            backgroundColor: 'rgba(75,192,192,0.2)', // Bar color
+            borderColor: 'rgba(75,192,192,1)', // Border color
+            borderWidth: 1, // Border width for the bars
           },
         ],
       });
@@ -122,9 +156,50 @@ const LineGraph: React.FC<LineGraphProps> = ({ year, month, day, metric, userid 
   }, [groupedData, year, month, day, metric]); // Update chart when groupedData changes
 
   return (
-    <div style={{ width: '90%', height: '400px', margin: '0 auto' }}>
+    <div style={{ width: '100%', height: '400px', margin: '0 auto'}}>
       {data ? (
-        <Line data={data} options={{ responsive: true, plugins: { title: { display: true, text: `${metric} over Time` } } }} />
+        <Bar
+          data={data}
+          options={{
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: `${formatMetric(metric)} over ${filter}`,
+              },
+              legend: {
+                display: true, // Show the legend
+                position: 'top', // Position the legend at the top
+                labels: {
+                  font: {
+                    size: 14, // Font size for the legend labels
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: `${filter}`, // X-axis label
+                  font: {
+                    size: 14, // Font size for the X-axis label
+                  },
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: metric, // Y-axis label (based on selected metric)
+                  font: {
+                    size: 14, // Font size for the Y-axis label
+                  },
+                },
+                beginAtZero: true, // Ensure the Y-axis starts at 0
+              },
+            },
+          }}
+        />
       ) : (
         <p>Loading...</p>
       )}
@@ -132,4 +207,4 @@ const LineGraph: React.FC<LineGraphProps> = ({ year, month, day, metric, userid 
   );
 };
 
-export default LineGraph;
+export default BarGraph;

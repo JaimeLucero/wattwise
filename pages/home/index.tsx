@@ -11,12 +11,14 @@ const Home: NextPage = () => {
     // Navigate to the target page directly
     router.push(href);
   };
+  
 
   return (
     <main
       style={{
         backgroundColor: '#FFFBDE',  // Set your desired background color here
-        height: '100%',  // Full viewport height
+        height: '100vh',  // Full viewport height
+        width: '100%',
         padding: 0,
         margin: 0,
         display: 'flex',  // Flexbox container
@@ -128,187 +130,37 @@ const Home: NextPage = () => {
           </h2>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',               // Enable Flexbox
-          flexDirection: 'column',       // Stack items vertically (column layout)
-          alignItems: 'center',          // Center items horizontally
-          position: 'relative',            // Make the parent relative to position child absolutely
-        }}
-      >
-          <img src="circles.svg" alt="circles"
-           style={{ 
-            paddingTop: '30px',
-            width: '100vw',
-          }}/>
-
-          <div
+        <h1
           style={{
-            position: 'absolute',         // Position it on top of the image
-            top: '60%',
-            left: '50%',
-            display: 'flex',
-            transform: 'translate(-50%, -50%)', // Adjust positioning to truly center the div
-            flexDirection: 'column',
-            alignItems: 'center',    // Center align the items horizontally
-            justifyContent: 'center', // Vertically center the items
-            gap: '20px', 
+            padding: 20,
+            position: 'relative',
+            color: 'black',           // Set text color to make it visible
+            fontSize: '2rem',
+            fontWeight: 'normal',  
+            fontFamily: 'Istok Web',
+            paddingTop: '100px',
           }}
           >
-            <h1
-            style={{
-              position: 'relative',
-              color: 'black',           // Set text color to make it visible
-              fontSize: '2rem',
-              fontWeight: 'normal',  
-              fontFamily: 'Istok Web',
-            }}>
-              Overview
-            </h1>
-            <button
-              style={{
-                backgroundColor: 'rgba(253, 255, 252)',    // Set button color
-                color: 'black',                                  // Text color
-                fontSize: '16px',                                // Font size
-                fontWeight: 'regular',                           // Regular text weight
-                padding: '10px 20px',                            // Padding inside the button
-                borderRadius: '25px',                            // Rounded corners
-                display: 'flex',                                 // Flexbox to align the text and arrow
-                justifyContent: 'center',                        // Center the text horizontally
-                alignItems: 'center',                            // Center the text vertically
-                cursor: 'pointer',                              // Pointer cursor on hover
-                marginTop: '20px',                               // Space between the text and button
-                textAlign: 'center',                             // Ensure the text is centered
-                width: '250px'                                   // Set fixed width for the button
-              }}
-            >
-              <span>Global Active Power</span>
-              {/* Right Arrow Icon */}
-              <span
-                style={{
-                  marginLeft: '10px',            // Space between text and arrow
-                  fontSize: '20px',              // Arrow size
-                }}
-              >
-                ➡
-              </span>
-            </button>
-            <button
-              style={{
-                backgroundColor: 'rgba(253, 255, 252)',    // Set button color
-                color: 'black',                                  // Text color
-                fontSize: '16px',                                // Font size
-                fontWeight: 'regular',                           // Regular text weight
-                padding: '10px 20px',                            // Padding inside the button
-                borderRadius: '25px',                            // Rounded corners
-                display: 'flex',                                 // Flexbox to align the text and arrow
-                justifyContent: 'center',                        // Center the text horizontally
-                alignItems: 'center',                            // Center the text vertically
-                cursor: 'pointer',                              // Pointer cursor on hover
-                marginTop: '20px',                               // Space between the text and button
-                textAlign: 'center',                             // Ensure the text is centered
-                width: '250px'                                   // Set fixed width for the button
-              }}
-            >
-              <span>Global Reactive Power</span>
-              {/* Right Arrow Icon */}
-              <span
-                style={{
-                  marginLeft: '10px',            // Space between text and arrow
-                  fontSize: '20px',              // Arrow size
-                }}
-              >
-                ➡
-              </span>
-            </button>
-            <button
-              style={{
-                backgroundColor: 'rgba(253, 255, 252)',    // Set button color
-                color: 'black',                                  // Text color
-                fontSize: '16px',                                // Font size
-                fontWeight: 'regular',                           // Regular text weight
-                padding: '10px 20px',                            // Padding inside the button
-                borderRadius: '25px',                            // Rounded corners
-                display: 'flex',                                 // Flexbox to align the text and arrow
-                justifyContent: 'center',                        // Center the text horizontally
-                alignItems: 'center',                            // Center the text vertically
-                cursor: 'pointer',                              // Pointer cursor on hover
-                marginTop: '20px',                               // Space between the text and button
-                textAlign: 'center',                             // Ensure the text is centered
-                width: '250px'                                   // Set fixed width for the button
-              }}
-            >
-              <span>Voltage</span>
-              {/* Right Arrow Icon */}
-              <span
-                style={{
-                  marginLeft: '10px',            // Space between text and arrow
-                  fontSize: '20px',              // Arrow size
-                }}
-              >
-                ➡
-              </span>
-            </button>
-            <button
-              style={{
-                backgroundColor: 'rgba(253, 255, 252)',    // Set button color
-                color: 'black',                                  // Text color
-                fontSize: '16px',                                // Font size
-                fontWeight: 'regular',                           // Regular text weight
-                padding: '10px 20px',                            // Padding inside the button
-                borderRadius: '25px',                            // Rounded corners
-                display: 'flex',                                 // Flexbox to align the text and arrow
-                justifyContent: 'center',                        // Center the text horizontally
-                alignItems: 'center',                            // Center the text vertically
-                cursor: 'pointer',                              // Pointer cursor on hover
-                marginTop: '20px',                               // Space between the text and button
-                textAlign: 'center',                             // Ensure the text is centered
-                width: '250px'                                   // Set fixed width for the button
-              }}
-            >
-              <span>Global Intensity</span>
-              {/* Right Arrow Icon */}
-              <span
-                style={{
-                  marginLeft: '10px',            // Space between text and arrow
-                  fontSize: '20px',              // Arrow size
-                }}
-              >
-                ➡
-              </span>
-            </button>
-          </div>
-        </div>
-
+            METRICS OVERVIEW
+          </h1>
         <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           width: '100%',  // Ensure the container takes up the full width
-          paddingTop: '100px'
+          justifyContent: 'center', // Align items to the start of the container
+          flexWrap: 'wrap',  
+          gap: '10px'
         }}
         >
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',  // Ensure the container takes up the full width
-              paddingLeft: '150px',   // Left padding
-              paddingRight: '150px',  // Right padding
-              paddingTop: '20px'
-
-            }}
             >
-            <img src="xxx.png" alt="xxx"
-            style={{ 
-              width: '20%',
-            }}/>
             <div
               style={{
                 display: 'flex',
                 border: '2px solid black',  // Set a solid black border with 2px thickness
-                width: '40vw',
+                width: '20vw',
+                height: '25vh',
                 borderRadius: '10px'
               }}
             >
@@ -316,7 +168,8 @@ const Home: NextPage = () => {
               style={{
                 fontSize: '1rem',  // Adjust font size as needed
                 fontWeight: 'normal',  // Set normal font weight for the entire text
-                margin: '15px'
+                margin: '15px',
+                alignSelf: 'center'
               }}
             >
               <strong>Global Active Power</strong> is the heartbeat of your household's energy use! 
@@ -326,23 +179,15 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',  // Ensure the container takes up the full width
-              paddingLeft: '150px',   // Left padding
-              paddingRight: '150px',  // Right padding
-              paddingTop: '30px'
 
-            }}
             >
 
             <div
               style={{
                 display: 'flex',
                 border: '2px solid black',  // Set a solid black border with 2px thickness
-                width: '40vw',
+                width: '20vw',
+                height: '25vh',
                 borderRadius: '10px'
               }}
             >
@@ -350,38 +195,24 @@ const Home: NextPage = () => {
               style={{
                 fontSize: '1rem',  // Adjust font size as needed
                 fontWeight: 'normal',  // Set normal font weight for the entire text
-                margin: '15px'
+                margin: '15px',
+                alignSelf: 'center'
               }}
             >
               <strong>Global Reactive Power</strong> is like the unseen rhythm of your energy flow! 
               It measures the power used to maintain the magnetic and electric fields in your appliances.
             </h2>
             </div>
-            <img src="xxx.png" alt="xxx"
-            style={{ 
-              width: '20%',
-            }}/>
           </div>
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',  // Ensure the container takes up the full width
-              paddingLeft: '150px',   // Left padding
-              paddingRight: '150px',  // Right padding
-              paddingTop: '30px'
-            }}
+
             >
-            <img src="xxx.png" alt="xxx"
-            style={{ 
-              width: '20%',
-            }}/>
             <div
               style={{
                 display: 'flex',
                 border: '2px solid black',  // Set a solid black border with 2px thickness
-                width: '40vw',
+                width: '20vw',
+                height: '25vh',
                 borderRadius: '10px'
               }}
             >
@@ -389,7 +220,8 @@ const Home: NextPage = () => {
               style={{
                 fontSize: '1rem',  // Adjust font size as needed
                 fontWeight: 'normal',  // Set normal font weight for the entire text
-                margin: '15px'
+                margin: '15px',
+                alignSelf: 'center'
               }}
             >
               <strong>Voltage</strong>  is the pulse of your home's power system, delivering the energy your devices need to thrive! Tracking its patterns helps ensure a steady flow, keeping everything powered up and running like a charm.
@@ -397,21 +229,13 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',  // Ensure the container takes up the full width
-              paddingLeft: '150px',   // Left padding
-              paddingRight: '150px',  // Right padding
-              paddingTop: '30px'
-            }}
             >  
             <div
               style={{
                 display: 'flex',
                 border: '2px solid black',  // Set a solid black border with 2px thickness
-                width: '40vw',
+                width: '20vw',
+                height: '25vh',
                 borderRadius: '10px'
               }}
             >
@@ -419,7 +243,8 @@ const Home: NextPage = () => {
               style={{
                 fontSize: '1rem',  // Adjust font size as needed
                 fontWeight: 'normal',  // Set normal font weight for the entire text
-                margin: '15px'
+                margin: '15px',
+                alignSelf: 'center'
               }}
             >
               <strong>Global Intensity</strong> is like the pulse of your household's energy flow! 
@@ -427,10 +252,6 @@ const Home: NextPage = () => {
                 power your appliances and devices are pulling at any moment.
             </h2>
             </div>
-            <img src="xxx.png" alt="xxx"
-            style={{ 
-              width: '20%',
-            }}/>
           </div>
         </div>
     </main>
