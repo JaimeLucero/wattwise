@@ -562,7 +562,10 @@ const Dashboard = () => {
             <div
             style={{
                 height: '100%',
-                alignSelf: 'center'
+                width: '90vw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignSelf: 'center',
             }}
             >
                 <BarGraph year={yearValueTrend} month={monthValue} day={dayValue} metric={metricValue} userid=''/>

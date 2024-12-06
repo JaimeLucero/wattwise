@@ -12,7 +12,7 @@ interface ForecastData {
 
 const ForecastVisualization: React.FC = () => {
   const [metric, setMetric] = useState<string>('Global_active_power'); // Default metric
-  const [forecastMonths, setForecastMonths] = useState<number>(6); // Default forecast months
+  const [forecastMonths, setForecastMonths] = useState<number>(); // Default forecast months
   const [forecast, setForecast] = useState<number[]>([]); // Forecast data
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -25,9 +25,20 @@ const ForecastVisualization: React.FC = () => {
 
   // Handle forecast months change
   const handleForecastMonthsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setForecastMonths(Number(event.target.value));
+    const value = event.target.value;
+  
+    // If the input is empty, don't update the value
+    if (value === '') {
+      setForecastMonths(0); // Optionally, set to an empty state like 0 or keep it unchanged
+    } else {
+      // Convert to a number and ensure it's a valid positive number
+      const newValue = Number(value);
+      if (!isNaN(newValue) && newValue >= 1) {
+        setForecastMonths(newValue);
+      }
+    }
   };
-
+  
   const fetchForecast = async () => {
     setLoading(true);
     setError('');
@@ -124,7 +135,7 @@ const ForecastVisualization: React.FC = () => {
         <select
           id="metric"
           value={metric}
-          onChange={handleMetricChange}
+          onChange={fetchForecast}
           style={{
             padding: '8px',
             fontSize: '14px',
