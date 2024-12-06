@@ -156,7 +156,7 @@ const BarGraph: React.FC<BarGraphProps> = ({ year, month, day, metric, userid })
   }, [groupedData, year, month, day, metric]); // Update chart when groupedData changes
 
   return (
-    <div style={{ width: '100%', height: '400px', margin: '0 auto'}}>
+    <div style={{ height: '400px', margin: '0 auto'}}>
       {data ? (
         <Bar
           data={data}

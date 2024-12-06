@@ -562,7 +562,6 @@ const Dashboard = () => {
             <div
             style={{
                 height: '100%',
-                width: '100%',
                 alignSelf: 'center'
             }}
             >
