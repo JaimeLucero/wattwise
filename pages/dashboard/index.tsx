@@ -32,7 +32,7 @@ const Dashboard = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('http://127.0.0.1:5000/api/full_query?columns=datetime,Global_active_power');
+          const response = await axios.get('https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?columns=datetime,Global_active_power');
           const data = response.data;
   
           // Extract unique years as string[]

@@ -40,7 +40,7 @@ const ForecastVisualization: React.FC = () => {
   
       console.log('Request Body:', requestBody);  // For debugging
   
-      const response = await fetch('http://127.0.0.1:5000/api/forecast', {
+      const response = await fetch('https://wattwise-backend-12d84fc99403.herokuapp.com/api/forecast', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

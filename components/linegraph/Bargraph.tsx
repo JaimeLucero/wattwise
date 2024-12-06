@@ -59,9 +59,9 @@ const BarGraph: React.FC<BarGraphProps> = ({ year, month, day, metric, userid })
         // Construct the API URL based on the selected filters
         let apiUrl = '';
         if (!userid) {
-          apiUrl = `http://127.0.0.1:5000/api/full_query?columns=datetime,${metric}`;
+          apiUrl = `https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?columns=datetime,${metric}`;
         } else {
-          apiUrl = `http://127.0.0.1:5000/api/full_query?user_id=${userid}&columns=datetime,${metric}`;
+          apiUrl = `https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?user_id=${userid}&columns=datetime,${metric}`;
         }
         const response = await axios.get(apiUrl);
         const fetchedData = response.data;
