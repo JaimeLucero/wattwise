@@ -253,342 +253,221 @@ const Dashboard = () => {
           .join(' ');                         // Join the words back into a string with spaces
       };
 
-  return (
-    <main
-    style={{
-        backgroundColor: '#FFFBDE',  // Set your desired background color here
-        height: '100%',  // Full viewport height
-        padding: 0,
-        margin: 0,
-        display: 'flex',  // Flexbox container
-        flexDirection: 'column',
-        textAlign: 'center',      // Center align text inside the container
-      }}
-    >
-        <Header/>
-        <h1
-        style={{
-          padding: 20,
-          position: 'relative',
-          color: 'black',           // Set text color to make it visible
-          fontSize: '2rem',
-          fontWeight: 'bold',  
-          fontFamily: 'Istok Web',
-          paddingTop: '70px'
-        }}
-        >
-          Dashboard
-        </h1>
-        <h1
-        style={{
-          padding: 20,
-          position: 'relative',
-          color: 'black',           // Set text color to make it visible
-          fontSize: '2rem',
-          fontWeight: 'normal',  
-          fontFamily: 'Istok Web',
-          alignSelf: 'left',
-          textAlign: 'left'
-        }}
-        >
-            Consumption Sales
-        </h1>
-
-        <div style={{ padding: '20px' }}>
-            <label htmlFor="year" style={{ fontSize: '1rem', fontWeight: 'bold', color: '#333' }}>Select Insights Year: </label>
-            <select
-                id="year"
-                value={yearValueInsight}
-                onChange={handleYearInsight}
-                style={{
-                    padding: '10px 20px',
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                    border: '2px solid #4CAF50',  // Green border
-                    backgroundColor: '#4CAF50',   // Green background
-                    color: 'white',                // White text color
-                    borderRadius: '5px',          // Rounded corners
-                    cursor: 'pointer',            // Pointer cursor on hover
-                    outline: 'none',              // Remove default outline
-                    transition: 'all 0.3s ease',  // Smooth transition for hover effect
-                }}
-            >
-                <option value="">None</option>
-                {availableYears.map((year) => (
-                    <option key={year} value={year}>
-                        {year}
-                    </option>
-                ))}
-            </select>
-        </div>
-        <div
+      return (
+        <main
             style={{
-                display: 'flex',
-                justifyContent: 'space-between', // Space out the divs
-                gap: '10px',                     // Optional: Add space between divs
-                width: '100%',                   // Make sure the container takes up the full width
-                padding: '20px',                 // Optional: Add padding to the container
-            }}
-            >
-            <div
-                style={{
-                width: '30%',                   // Each div takes up 30% of the container width
-                height: '20vh',                // Set the height of the divs
-                backgroundColor: '#F8E877',   // Background color for the first div
-                borderRadius: '10px',           // Add rounded corners
-                justifyContent: 'center',       // Horizontally center the content
-                outline: '3px solid black',     // Add an outline
-                }}
-            >
-                <h1
-                style={{
-                padding: 20,
-                position: 'relative',
-                color: 'black',           // Set text color to make it visible
-                fontSize: '1.3rem',
-                fontWeight: 'bold',  
-                fontFamily: 'Istok Web',
-                textAlign: 'center',
-                }}
-                >
-                    Total Annual Sales:
-                </h1>
-                <h1
-                style={{
-                padding: 20,
-                position: 'relative',
-                color: 'black',           // Set text color to make it visible
-                fontSize: '1.3rem',
-                fontWeight: 'bold',  
-                fontFamily: 'Istok Web',
-                textAlign: 'center',
-                }}
-                >
-                    $ {totalAnnualSales?.toFixed(2) || '0.00'} 
-                </h1>
-                {percentageChange !== null && (
-                    <h2
-                        style={{
-                            padding: 5,
-                            color: percentageChange >= 0 ? 'green' : 'red',
-                            fontSize: '0.8rem',
-                            fontWeight: 'bold',
-                            fontFamily: 'Istok Web',
-                        }}
-                    >
-                        {percentageChange >= 0 ? 'Increase' : 'Decrease'} in Annual Sales from the Previous Year: {percentageChange.toFixed(2)}%
-                    </h2>
-                )}
-            </div>
-            <div
-                style={{
-                width: '30%',                   // Each div takes up 30% of the container width
-                height: '20vh',                // Set the height of the divs
-                backgroundColor: '#F8E877',   // Background color for the first div
-                borderRadius: '10px',           // Add rounded corners
-                justifyContent: 'center',       // Horizontally center the content
-                outline: '3px solid black',     // Add an outline
-                }}
-            >
-                <h1
-                style={{
-                padding: 20,
-                position: 'relative',
-                color: 'black',           // Set text color to make it visible
-                fontSize: '1.3rem',
-                fontWeight: 'bold',  
-                fontFamily: 'Istok Web',
-                textAlign: 'center',
-                }}
-                >
-                    Peak Sales:
-                </h1>
-                <h1
-                    style={{
-                    padding: 20,
-                    position: 'relative',
-                    color: 'black',
-                    fontSize: '1.3rem',
-                    fontWeight: 'bold',
-                    fontFamily: 'Istok Web',
-                    textAlign: 'center',
-                    }}
-                >
-                    <p>$ {peakSales?.toFixed(2) || '0.00'}</p>
-                    <p>{peakMonth}, {yearValueInsight}</p>
-                </h1>
-                <h2
-                    style={{
-                    padding: 5,
-                    color: peakVsAvgSalesDifference !== null && peakVsAvgSalesDifference > 0 ? 'green' : 'red',
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold',
-                    fontFamily: 'Istok Web',
-                    }}
-                >
-                    {salesDifferenceInsight}
-                </h2>
-            </div>
-            <div
-                style={{
-                width: '30%',                   // Each div takes up 30% of the container width
-                height: '20vh',                // Set the height of the divs
-                backgroundColor: '#F8E877',   // Background color for the first div
-                borderRadius: '10px',           // Add rounded corners
-                justifyContent: 'center',       // Horizontally center the content
-                outline: '3px solid black',     // Add an outline
-                }}
-            >
-                <h1
-                style={{
-                padding: 20,
-                position: 'relative',
-                color: 'black',           // Set text color to make it visible
-                fontSize: '1.3rem',
-                fontWeight: 'bold',  
-                fontFamily: 'Istok Web',
-                textAlign: 'center',
-                }}
-                >
-                    Average Monthly Sales:
-                </h1>
-                <h1
-                style={{
-                padding: 20,
-                position: 'relative',
-                color: 'black',           // Set text color to make it visible
-                fontSize: '1.3rem',
-                fontWeight: 'bold',  
-                fontFamily: 'Istok Web',
-                textAlign: 'center',
-                }}
-                >
-                   $ {avgMonthlySales?.toFixed(2) || '0.00'}
-                </h1>
-                <h2
-                    style={{
-                    padding: 5,
-                    color:competitorSalesColor,
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold',
-                    fontFamily: 'Istok Web',
-                    }}
-                >
-                    {competitorSalesInsight}
-                </h2>
-            </div>
-        </div>
-
-        <div
-            style={{
-                margin: '20px',
-                width: '90vw',
-                height: '100%',
-                borderRadius: '10px',
+                backgroundColor: '#FFFBDE',
+                minHeight: '100vh', // Full viewport height
+                padding: 0,
+                margin: 0,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                alignSelf: 'center',
-                outline: '3px solid black',     // Add an outline
-
+                alignItems: 'center', // Center content horizontally
+                textAlign: 'center',
             }}
-            >
+        >
+            <Header />
             <h1
                 style={{
-                    margin: '30px',
-                    fontSize: '2rem',
-                    fontWeight: 'regular'
+                    color: 'black',
+                    fontSize: 'clamp(1.5rem, 2vw, 2.5rem)', // Responsive font size
+                    fontWeight: 'bold',
+                    fontFamily: 'Istok Web',
+                    margin: '70px 20px 20px', // Margin with top padding for the fixed header
                 }}
+            >
+                Dashboard
+            </h1>
+
+            <div style={{ padding: '20px' }}>
+                <label
+                    htmlFor="year"
+                    style={{
+                        fontSize: 'clamp(0.9rem, 1vw, 1.2rem)',
+                        fontWeight: 'bold',
+                        color: '#333',
+                        margin: '15px'
+                    }}
+                >
+                    Select Insights Year:
+                </label>
+                <select
+                    id="year"
+                    value={yearValueInsight}
+                    onChange={handleYearInsight}
+                    style={{
+                        padding: '10px 20px',
+                        fontSize: 'clamp(0.9rem, 1vw, 1.2rem)',
+                        fontWeight: 'bold',
+                        border: '2px solid #4CAF50',
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        outline: 'none',
+                        transition: 'all 0.3s ease',
+                    }}
+                >
+                    <option value="">None</option>
+                    {availableYears.map((year) => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div
+                style={{
+                    display: 'flex',
+                    flexWrap: 'wrap', // Wrap the divs on smaller screens
+                    justifyContent: 'space-between',
+                    gap: '20px',
+                    width: '90%', // Use percentage width for responsiveness
+                    padding: '20px',
+                }}
+            >
+                {[{
+                    title: "Total Annual Sales:",
+                    value: `$${totalAnnualSales?.toFixed(2) || '0.00'}`,
+                    subtext: percentageChange !== null ? `${percentageChange >= 0 ? 'Increase' : 'Decrease'}: ${percentageChange.toFixed(2)}%` : null,
+                    subtextColor: percentageChange >= 0 ? 'green' : 'red'
+                }, {
+                    title: "Peak Sales:",
+                    value: `$${peakSales?.toFixed(2) || '0.00'}\n${peakMonth}, ${yearValueInsight}`,
+                    subtext: salesDifferenceInsight,
+                    subtextColor: peakVsAvgSalesDifference > 0 ? 'green' : 'red'
+                }, {
+                    title: "Average Monthly Sales:",
+                    value: `$${avgMonthlySales?.toFixed(2) || '0.00'}`,
+                    subtext: competitorSalesInsight,
+                    subtextColor: competitorSalesColor
+                }].map((card, idx) => (
+                    <div
+                        key={idx}
+                        style={{
+                            flex: '1 1 calc(33% - 20px)', // Flex grows and shrinks to fit
+                            maxWidth: 'calc(33% - 20px)', // Ensure no overflow
+                            minWidth: '250px', // Minimum size for smaller screens
+                            height: '20vh',
+                            backgroundColor: '#F8E877',
+                            borderRadius: '10px',
+                            outline: '3px solid black',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '10px',
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontSize: 'clamp(1rem, 1.2vw, 1.5rem)',
+                                fontWeight: 'bold',
+                                fontFamily: 'Istok Web',
+                                textAlign: 'center',
+                                marginBottom: '10px',
+                            }}
+                        >
+                            {card.title}
+                        </h1>
+                        <h2
+                            style={{
+                                fontSize: 'clamp(1rem, 1.2vw, 1.5rem)',
+                                fontWeight: 'bold',
+                                fontFamily: 'Istok Web',
+                                textAlign: 'center',
+                                marginBottom: '10px',
+                            }}
+                        >
+                            {card.value}
+                        </h2>
+                        {card.subtext && (
+                            <h3
+                                style={{
+                                    fontSize: 'clamp(0.8rem, 1vw, 1.2rem)',
+                                    fontWeight: 'bold',
+                                    fontFamily: 'Istok Web',
+                                    textAlign: 'center',
+                                    color: card.subtextColor,
+                                }}
+                            >
+                                {card.subtext}
+                            </h3>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            {/* Chart and Forecast Sections */}
+            <div
+                style={{
+                    margin: '20px',
+                    width: '90%',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    outline: '3px solid black',
+                }}
+            >
+                <h1
+                    style={{
+                        fontSize: 'clamp(1.5rem, 2vw, 2.5rem)',
+                        fontWeight: 'regular',
+                        marginBottom: '20px',
+                    }}
                 >
                     {formatMetric(metricValue)} Consumption Trends
                 </h1>
-            <div
-            style={{
-                display: 'flex',
-                gap: '10px',
-                margin: '20px'
-            }}
-            >
-                <div>
-                <label>Year:</label>
-                <select id="yearDropdown" value={yearValueTrend} onChange={handleYearTrend}>
-                    <option value="">None</option>
-                    {availableYears.map((year) => (
-                    <option key={year} value={year}>
-                        {year}
-                    </option>
-                    ))}
-                </select>
-                </div>
-                <div>
-                <label>Month:</label>
-                <select
-                    id="monthDropdown"
-                    value={monthValue}
-                    onChange={handleMonth}
-                    disabled={yearValueTrend === ''}>
-                    <option value="">None</option>
-                    {availableMonths.map((month) => (
-                    <option key={month} value={month}>
-                        {month}
-                    </option>
-                    ))}
-                </select>
-                </div>
-                <div>
-                <label>Day:</label>
-                <select
-                    id="dayDropdown"
-                    value={dayValue}
-                    onChange={handleDay}
-                    disabled={yearValueTrend === '' || monthValue === ''}>
-                    <option value="">None</option>
-                    {availableDays.map((day) => (
-                    <option key={day} value={day}>
-                        {day}
-                    </option>
-                    ))}
-                </select>
-                </div>
-            <div>
-                <label>Metric:</label>
-                <select id="metricDropdown" value={metricValue} onChange={handleMetric}>
-                <option value="Global_active_power">Global Active Power</option>
-                <option value="Global_reactive_power">Global Reactive Power</option>
-                <option value="Voltage">Voltage</option>
-                <option value="Global_intensity">Global Intensity</option>
-                </select>
-            </div>
+                <BarGraph
+                    year={yearValueTrend}
+                    month={monthValue}
+                    day={dayValue}
+                    metric={metricValue}
+                    userid=""
+                />
             </div>
             <div
-            style={{
-                height: '100%',
-                width: '90vw',
-                display: 'flex',
-                justifyContent: 'center',
-                alignSelf: 'center',
-            }}
+                style={{
+                    margin: '20px',
+                    width: '90%',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    outline: '3px solid black', // Optional outline for visibility
+                    backgroundColor: '#FFFBDE', // Match background for cohesiveness
+                }}
             >
-                <BarGraph year={yearValueTrend} month={monthValue} day={dayValue} metric={metricValue} userid=''/>
+                <h1
+                    style={{
+                        fontSize: 'clamp(1.5rem, 2vw, 2.5rem)', // Responsive heading size
+                        fontWeight: 'bold',
+                        marginBottom: '20px',
+                        fontFamily: 'Istok Web',
+                    }}
+                >
+                    Forecast Insights
+                </h1>
+                <div
+                    style={{
+                        width: '100%',
+                        height: 'auto', // Let the content determine height
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column', // Stack content vertically
+                    }}
+                >
+                    <ForecastVisualization />
+                </div>
             </div>
-        </div>
-        <div
-        style={{
-            margin: '20px',
-            width: '90vw',
-            height: '100%',
-            borderRadius: '10px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            alignSelf: 'center',
-            outline: '3px solid black',     // Add an outline
 
-        }}>
-            <ForecastVisualization/>
-        </div>
-    </main>
-  );
+        </main>
+    );
 };
 
 export default Dashboard;
