@@ -130,7 +130,7 @@ const Home: NextPage = () => {
             textAlign: 'center',
           }}
         >
-          WattWise provides detailed insights into household power consumption trends over time, helping both electrical companies and consumers identify patterns in energy usage.
+          WattWise provides detailed insights into household power consumption trends over time, helping both electrical companies and consumers identify patterns in energy usage. By tracking and analyzing these trends, WattWise serves as a valuable tool to understand, manage, and measure energy use for each household effectively.
         </h2>
       </div>
 
