@@ -12,16 +12,6 @@ const Header: React.FC = () => {
         }
     };
 
-    // Inline styles for header
-    const headerStyles = {
-        background: 'linear-gradient(#235789, #FFFBDE)', // Horizontal gradient
-        padding: '20px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-    };
-
     const navStyles = {
         display: 'flex',
     };
@@ -60,13 +50,23 @@ const Header: React.FC = () => {
     const isActive = (path: string) => router.pathname === path ? activeLinkStyles : {};
 
     return (
-        <header style={headerStyles}>
+        <header style={{
+            position: 'fixed',
+            background: 'linear-gradient(#235789, #FFFBDE)', // Horizontal gradient
+            padding: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            zIndex: 1000, // Ensure the header stays on top of content
+        }}>
             <img src="Watt-Wise.svg" alt="Logo" width="50" height="50" style={{ paddingLeft: '20px' }} />
             <nav style={navStyles}>
                 <ul style={navListStyles}>
                     <li style={navItemStyles}>
                         <Link
                             href="/home"
+                            passHref
                             style={{ ...navLinkStyles, ...(router.pathname === '/home' ? navLinkActiveStyles : {}) }}
                             onClick={() => handleLinkClick('/home')}
                         >
@@ -76,6 +76,7 @@ const Header: React.FC = () => {
                     <li style={navItemStyles}>
                         <Link
                             href="/dashboard"
+                            passHref
                             style={{ ...navLinkStyles, ...(router.pathname === '/dashboard' ? navLinkActiveStyles : {}) }}
                             onClick={() => handleLinkClick('/dashboard')}
                         >
@@ -85,6 +86,7 @@ const Header: React.FC = () => {
                     <li style={navItemStyles}>
                         <Link
                             href="/about"
+                            passHref
                             style={{ ...navLinkStyles, ...(router.pathname === '/about' ? navLinkActiveStyles : {}) }}
                             onClick={() => handleLinkClick('/about')}
                         >

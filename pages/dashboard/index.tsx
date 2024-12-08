@@ -274,6 +274,7 @@ const Dashboard = () => {
           fontSize: '2rem',
           fontWeight: 'bold',  
           fontFamily: 'Istok Web',
+          paddingTop: '70px'
         }}
         >
           Dashboard
