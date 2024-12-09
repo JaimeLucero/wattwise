@@ -6,9 +6,6 @@ import { ChartOptions } from 'chart.js'; // Import ChartOptions type
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-interface ForecastData {
-  forecast: number[];
-}
 
 const ForecastVisualization: React.FC = () => {
   const [metric, setMetric] = useState<string>('Global_active_power'); // Default metric

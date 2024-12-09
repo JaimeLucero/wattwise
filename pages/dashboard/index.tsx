@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BarGraph from "@components/linegraph/Bargraph";
 import ForecastVisualization from "@components/forecasting/Forecasting";
+import DataTable from "@components/table/Table";
 
 const Dashboard = () => {
     const [yearValueTrend, setYearValueTrend] = useState<string>('');
@@ -385,7 +386,7 @@ const Dashboard = () => {
                 </h2>
               )}
             </div>
-
+              {/* TODO: improve responsiveness */}
             <div
               style={{
                 width: '30%',
@@ -599,6 +600,22 @@ const Dashboard = () => {
             }}
           >
             <ForecastVisualization />
+          </div>
+          {/* TODO: add filtering and export to csv */}
+          <div
+            style={{
+              margin: '20px',
+              width: '90vw',
+              height: '100%',
+              borderRadius: '10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              alignSelf: 'center',
+              outline: '3px solid black',
+            }}
+          >
+            <DataTable/>
           </div>
         </main>
       );      
