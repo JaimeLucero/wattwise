@@ -9,7 +9,8 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const ForecastVisualization: React.FC = () => {
   const [metric, setMetric] = useState<string>('Global_active_power'); // Current metric selection
   const [displayedMetric, setDisplayedMetric] = useState<string>(''); // Metric for the title
-  const [forecastMonths, setForecastMonths] = useState<number>();
+  const [forecastMonths, setForecastMonths] = useState<number>(); // Actual forecast months for the fetched forecast
+  const [inputForecastMonths, setInputForecastMonths] = useState<string>(''); // Input placeholder for forecast months
   const [forecast, setForecast] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -20,17 +21,9 @@ const ForecastVisualization: React.FC = () => {
     setMetric(event.target.value);
   };
 
-  // Handle forecast months change
+  // Handle forecast months input change
   const handleForecastMonthsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value === '') {
-      setForecastMonths(0);
-    } else {
-      const newValue = Number(value);
-      if (!isNaN(newValue) && newValue >= 1) {
-        setForecastMonths(newValue);
-      }
-    }
+    setInputForecastMonths(event.target.value);
   };
 
   const formatMetric = (metric: string): string => {
@@ -39,15 +32,21 @@ const ForecastVisualization: React.FC = () => {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
       .join(' '); // Join the words with spaces
   };
-  
 
   const fetchForecast = async () => {
     setLoading(true);
     setError('');
     try {
+      const months = Number(inputForecastMonths);
+      if (isNaN(months) || months < 1) {
+        setError('Please enter a valid number of months (>= 1).');
+        setLoading(false);
+        return;
+      }
+
       const requestBody = {
         metric,
-        forecast_months: forecastMonths,
+        forecast_months: months,
       };
 
       const response = await fetch('https://wattwise-backend-12d84fc99403.herokuapp.com/api/forecast', {
@@ -64,6 +63,7 @@ const ForecastVisualization: React.FC = () => {
 
       const data = await response.json();
       setForecast(data.forecast);
+      setForecastMonths(months); // Update forecastMonths with the fetched value
       setIsForecastFetched(true);
       setDisplayedMetric(metric); // Update displayedMetric only after successful fetch
     } catch (error) {
@@ -155,9 +155,9 @@ const ForecastVisualization: React.FC = () => {
         <input
           id="forecast_months"
           type="number"
-          value={forecastMonths}
+          value={inputForecastMonths}
           onChange={handleForecastMonthsChange}
-          min={1}
+          placeholder="Enter number of months"
           style={{
             padding: '8px',
             fontSize: '14px',
