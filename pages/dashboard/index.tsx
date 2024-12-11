@@ -291,7 +291,7 @@ const Dashboard = () => {
               textAlign: 'left',
             }}
           >
-            Consumption Sales
+            Sales Insights
           </h1>
       
           <div style={{ padding: '20px' }}>
@@ -415,7 +415,7 @@ const Dashboard = () => {
                   padding: 10,
                   position: 'relative',
                   color: 'black',
-                  fontSize: 'clamp(0.5rem, 2.5vw, 1.3rem)', // Responsive font size
+                  fontSize: 'clamp(0.3rem, 2.5vw, 1.3rem)', // Responsive font size
                   fontWeight: 'bold',
                   fontFamily: 'Istok Web',
                   textAlign: 'center',

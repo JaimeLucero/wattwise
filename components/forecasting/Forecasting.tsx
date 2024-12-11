@@ -6,17 +6,14 @@ import { ChartOptions } from 'chart.js'; // Import ChartOptions type
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-interface ForecastData {
-  forecast: number[];
-}
-
 const ForecastVisualization: React.FC = () => {
-  const [metric, setMetric] = useState<string>('Global_active_power'); // Default metric
-  const [forecastMonths, setForecastMonths] = useState<number>(); // Default forecast months
-  const [forecast, setForecast] = useState<number[]>([]); // Forecast data
+  const [metric, setMetric] = useState<string>('Global_active_power'); // Current metric selection
+  const [displayedMetric, setDisplayedMetric] = useState<string>(''); // Metric for the title
+  const [forecastMonths, setForecastMonths] = useState<number>();
+  const [forecast, setForecast] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [isForecastFetched, setIsForecastFetched] = useState<boolean>(false); // Track if forecast data is fetched
+  const [isForecastFetched, setIsForecastFetched] = useState<boolean>(false);
 
   // Handle metric change
   const handleMetricChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -26,50 +23,52 @@ const ForecastVisualization: React.FC = () => {
   // Handle forecast months change
   const handleForecastMonthsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-  
-    // If the input is empty, don't update the value
     if (value === '') {
-      setForecastMonths(0); // Optionally, set to an empty state like 0 or keep it unchanged
+      setForecastMonths(0);
     } else {
-      // Convert to a number and ensure it's a valid positive number
       const newValue = Number(value);
       if (!isNaN(newValue) && newValue >= 1) {
         setForecastMonths(newValue);
       }
     }
   };
+
+  const formatMetric = (metric: string): string => {
+    return metric
+      .split('_') // Split the metric by underscores
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+      .join(' '); // Join the words with spaces
+  };
   
+
   const fetchForecast = async () => {
     setLoading(true);
     setError('');
     try {
-      // The request body should match the required structure
       const requestBody = {
-        metric: metric,  // This will be something like 'Global_active_power'
-        forecast_months: forecastMonths,  // This will be a number like 12
+        metric,
+        forecast_months: forecastMonths,
       };
-  
-      console.log('Request Body:', requestBody);  // For debugging
-  
+
       const response = await fetch('https://wattwise-backend-12d84fc99403.herokuapp.com/api/forecast', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),  // Ensure this is the correct JSON format
+        body: JSON.stringify(requestBody),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch forecast');
       }
-  
+
       const data = await response.json();
-      setForecast(data.forecast);  // Assuming response structure is correct
-      setIsForecastFetched(true); // Set the flag to indicate that the forecast is fetched
-  
+      setForecast(data.forecast);
+      setIsForecastFetched(true);
+      setDisplayedMetric(metric); // Update displayedMetric only after successful fetch
     } catch (error) {
       setError('Error fetching forecast');
-      setIsForecastFetched(false); // Ensure the flag is reset if there is an error
+      setIsForecastFetched(false);
     } finally {
       setLoading(false);
     }
@@ -80,7 +79,7 @@ const ForecastVisualization: React.FC = () => {
     labels: Array.from({ length: forecast.length }, (_, index) => `Month ${index + 1}`),
     datasets: [
       {
-        label: `Forecast for ${metric}`,
+        label: `Forecast for ${displayedMetric}`,
         data: forecast,
         fill: false,
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -89,13 +88,12 @@ const ForecastVisualization: React.FC = () => {
     ],
   };
 
-  // Chart options including legend and axis labels
-  const chartOptions:  ChartOptions<'line'> = {
+  const chartOptions: ChartOptions<'line'> = {
     responsive: true,
-    maintainAspectRatio: false,  // Ensure chart stretches to fill container
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position:'top',
+        position: 'top',
         labels: {
           font: {
             size: 14,
@@ -116,7 +114,7 @@ const ForecastVisualization: React.FC = () => {
       y: {
         title: {
           display: true,
-          text: `${metric}`,
+          text: `${displayedMetric}`,
           font: {
             size: 14,
           },
@@ -129,13 +127,12 @@ const ForecastVisualization: React.FC = () => {
     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', width: '100%', margin: 'auto' }} className="forecast-container">
       <h2 style={{ textAlign: 'center' }}>Forecast Visualization</h2>
 
-      {/* Metric and Forecast Selection */}
       <div style={{ marginBottom: '15px' }}>
         <label htmlFor="metric" style={{ fontSize: '16px', fontWeight: 'bold' }}>Select Metric:</label>
         <select
           id="metric"
           value={metric}
-          onChange={fetchForecast}
+          onChange={handleMetricChange}
           style={{
             padding: '8px',
             fontSize: '14px',
@@ -192,15 +189,15 @@ const ForecastVisualization: React.FC = () => {
         {loading ? 'Loading...' : 'Get Forecast'}
       </button>
 
-      {/* Error Message */}
       {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '10px' }}>{error}</p>}
 
-      {/* Chart */}
       {isForecastFetched && forecast.length > 0 && !loading && (
         <div style={{ marginTop: '30px' }}>
-          <h3 style={{ textAlign: 'center' }}>Forecasted {metric} Values</h3>
-          <div style={{ width: '100%', height: '400px' }}> {/* Bigger chart container */}
-            <Line data={chartData} options={chartOptions} /> {/* Disable aspect ratio to take full container space */}
+          <h3 style={{ textAlign: 'center' }}>
+            Forecasted {formatMetric(displayedMetric)} Values for the Next {forecastMonths} Months
+          </h3>
+          <div style={{ width: '100%', height: '400px' }}>
+            <Line data={chartData} options={chartOptions} />
           </div>
         </div>
       )}
