@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { ChartOptions } from 'chart.js'; // Import ChartOptions type
+import dotenv from 'dotenv';
 
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ForecastVisualization: React.FC = () => {
+
+
   const [metric, setMetric] = useState<string>('Global_active_power'); // Current metric selection
   const [displayedMetric, setDisplayedMetric] = useState<string>(''); // Metric for the title
   const [forecastMonths, setForecastMonths] = useState<number>(); // Actual forecast months for the fetched forecast
@@ -15,6 +18,7 @@ const ForecastVisualization: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [isForecastFetched, setIsForecastFetched] = useState<boolean>(false);
+  const RENDER_URL = process.env.NEXT_PUBLIC_RENDER_URL
 
   // Handle metric change
   const handleMetricChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -49,7 +53,7 @@ const ForecastVisualization: React.FC = () => {
         forecast_months: months,
       };
 
-      const response = await fetch('https://wattwise-backend-12d84fc99403.herokuapp.com/api/forecast', {
+      const response = await fetch(`${RENDER_URL}/api/forecast`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

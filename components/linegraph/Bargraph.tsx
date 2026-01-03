@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { DateTime } from 'luxon';
+import dotenv from 'dotenv';
+
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -15,9 +17,12 @@ interface BarGraphProps {
 }
 
 const BarGraph: React.FC<BarGraphProps> = ({ year, month, day, metric, userid }) => {
+
+
   const [data, setData] = useState<any>(null);
   const [groupedData, setGroupedData] = useState<Record<string, number>>({});
   const [filter, setFilter] = useState<any>(null);
+  const RENDER_URL = process.env.NEXT_PUBLIC_RENDER_URL
 
   const formatMetric = (metricValue: string) => {
     return metricValue
@@ -53,8 +58,8 @@ const BarGraph: React.FC<BarGraphProps> = ({ year, month, day, metric, userid })
     const fetchData = async () => {
       try {
         const apiUrl = userid
-          ? `https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?user_id=${userid}&columns=datetime,${metric}`
-          : `https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?columns=datetime,${metric}`;
+          ? `${RENDER_URL}/api/full_query?user_id=${userid}&columns=datetime,${metric}`
+          : `${RENDER_URL}/api/full_query?columns=datetime,${metric}`;
 
         const response = await axios.get(apiUrl);
         const fetchedData = response.data;

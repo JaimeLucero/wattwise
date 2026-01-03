@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BarGraph from "@components/linegraph/Bargraph";
 import ForecastVisualization from "@components/forecasting/Forecasting";
+import dotenv from 'dotenv';
 
 const Dashboard = () => {
+
     const [yearValueTrend, setYearValueTrend] = useState<string>('');
     const [monthValue, setMonthValue] = useState<string>('');
     const [dayValue, setDayValue] = useState<string>('');
@@ -23,6 +25,8 @@ const Dashboard = () => {
     const [salesDifferenceInsight, setSalesDifferenceInsight] = useState<string>(''); // Insight for sales difference
     const [competitorSalesInsight, setCompetitorSalesInsight] = useState('');
     const [competitorSalesColor, setCompetitorSalesColor] = useState('');
+    const RENDER_URL = process.env.NEXT_PUBLIC_RENDER_URL
+
 
 
     // Rate per kWh (set the rate according to your pricing)
@@ -32,8 +36,9 @@ const Dashboard = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('https://wattwise-backend-12d84fc99403.herokuapp.com/api/full_query?columns=datetime,Global_active_power');
+          const response = await axios.get(`${RENDER_URL}/api/full_query?columns=datetime,Global_active_power`);
           const data = response.data;
+          console.log("Fetched Data:", data);  // Debugging step: Check fetched data
   
           // Extract unique years as string[]
           const years = Array.from(
@@ -279,6 +284,18 @@ const Dashboard = () => {
           >
             Dashboard
           </h1>
+          <h3
+            style={{
+              padding: 20,
+              position: 'relative',
+              color: 'black',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              fontFamily: 'Istok Web',
+            }}
+          >
+            The dashboard may load slow so please be patient while data is being fetched.
+          </h3>
           <h1
             style={{
               padding: 20,

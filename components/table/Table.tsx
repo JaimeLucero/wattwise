@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
 interface TableDataProps {
   userid: string;
 }
 
 const DataTable: React.FC<TableDataProps>= ({userid}) => {
+
+
   const [data, setData] = useState<any[]>([]);
+  const RENDER_URL = process.env.NEXT_PUBLIC_RENDER_URL
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,9 +18,9 @@ const DataTable: React.FC<TableDataProps>= ({userid}) => {
         // Construct the API URL without any filters
         let apiUrl = '';
         if (!userid){
-          apiUrl = `http://127.0.0.1:5000/api/full_query?columns=datetime,Global_active_power,Global_reactive_power,Global_intensity,Voltage,consumer_id`;
+          apiUrl = `${RENDER_URL}/api/full_query?columns=datetime,Global_active_power,Global_reactive_power,Global_intensity,Voltage,consumer_id`;
         } else {
-          apiUrl = `http://127.0.0.1:5000/api/full_query?user_id=${userid}&columns=datetime,Global_active_power,Global_reactive_power,Global_intensity,Voltage,consumer_id`;
+          apiUrl = `${RENDER_URL}/api/full_query?user_id=${userid}&columns=datetime,Global_active_power,Global_reactive_power,Global_intensity,Voltage,consumer_id`;
         }
 
         const response = await axios.get(apiUrl);
