@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [availableMonths, setAvailableMonths] = useState<string[]>([]);
     const [availableDays, setAvailableDays] = useState<string[]>([]);
     const [fetchedData, setFetchedData] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [peakSales, setPeakSales] = useState<number | null>(null);  // State for peak usage
     const [peakMonth, setPeakMonth] = useState<string>(null);  // State for peak usage
     const [totalAnnualSales, setTotalAnnualSales] = useState<number | null>(null); // State for total sales
@@ -57,6 +58,8 @@ const Dashboard = () => {
           setFetchedData(data);
         } catch (error) {
           console.error('Error fetching data:', error);
+        } finally {
+          setIsLoading(false);
         }
       };
   
@@ -257,6 +260,36 @@ const Dashboard = () => {
           .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
           .join(' ');                         // Join the words back into a string with spaces
       };
+
+      if (isLoading) {
+        return (
+          <main
+            style={{
+              backgroundColor: '#FFFBDE',
+              height: '100%',
+              padding: 0,
+              margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: 'center',
+            }}
+          >
+            <Header />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                <svg width="64" height="64" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="25" cy="25" r="20" fill="none" stroke="#4CAF50" strokeWidth="5" strokeLinecap="round" strokeDasharray="31.4 31.4">
+                    <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+                  </circle>
+                </svg>
+                <div style={{ padding: 12, backgroundColor: '#F8E877', borderRadius: 8, outline: '3px solid black', fontWeight: 'bold' }}>
+                  Loading data, please be patient…
+                </div>
+              </div>
+            </div>
+          </main>
+        );
+      }
 
       return (
         <main
